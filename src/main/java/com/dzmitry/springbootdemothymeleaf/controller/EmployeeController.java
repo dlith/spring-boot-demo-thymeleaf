@@ -1,6 +1,8 @@
 package com.dzmitry.springbootdemothymeleaf.controller;
 
-import com.dzmitry.springbootdemothymeleaf.model.Employee;
+import com.dzmitry.springbootdemothymeleaf.entity.Employee;
+import com.dzmitry.springbootdemothymeleaf.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private List<Employee> employeeList;
+    /*private List<Employee> employeeList;
 
     @PostConstruct
     private void loadData(){
@@ -26,11 +28,19 @@ public class EmployeeController {
         employeeList.add(emp1);
         employeeList.add(emp2);
         employeeList.add(emp3);
+    }*/
+
+    private EmployeeService employeeService;
+
+    @Autowired
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/list")
     public String listEmployees(Model model) {
 
+        List<Employee> employeeList = employeeService.findAll();
         model.addAttribute("employeeList", employeeList);
 
         return "list-employees";
